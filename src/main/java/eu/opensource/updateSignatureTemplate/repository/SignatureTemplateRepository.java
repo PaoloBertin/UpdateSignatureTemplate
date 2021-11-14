@@ -12,6 +12,20 @@ public interface SignatureTemplateRepository extends JpaRepository<SignatureTemp
 
     //    @Query("UPDATE SignatureTemplate ST SET ST.isDefault = CASE WHEN ST.id = :defaultSignatureTemplateId THEN true ELSE false END WHERE ST.id IN (SELECT ST.id FROM SignatureTemplate ST JOIN ST.documentClassFolder D WHERE D.id = (SELECT D.id FROM SignatureTemplate ST JOIN ST.documentClassFolder D WHERE ST.id = :defaultSignatureTemplateId)")
     @Modifying
-    @Query("UPDATE SignatureTemplate ST SET ST.isDefault = CASE WHEN ST.id = :defaultSignatureTemplateId THEN true ELSE false END WHERE ST.id IN (SELECT ST.id FROM SignatureTemplate ST JOIN ST.documentClassFolder D WHERE D.id = (SELECT D.id FROM SignatureTemplate ST JOIN ST.documentClassFolder D WHERE ST.id = :defaultSignatureTemplateId))")
+    @Query("UPDATE SignatureTemplate ST SET ST.isDefault = CASE WHEN ST.id = :defaultSignatureTemplateId " +
+           "                                                        THEN true " +
+           "                                                        ELSE false " +
+           "                                               END " +
+           "WHERE ST.id IN (" +
+           "                 SELECT ST.id " +
+           "                 FROM SignatureTemplate ST " +
+           "                 JOIN ST.documentClassFolder D " +
+           "                 WHERE D.id = (" +
+           "                                SELECT D.id " +
+           "                                FROM SignatureTemplate ST " +
+           "                                JOIN ST.documentClassFolder D " +
+           "                                WHERE ST.id = :defaultSignatureTemplateId" +
+           "                              )" +
+           "               )")
     int setDefaultForDocumentClass(@Param("defaultSignatureTemplateId") Long defaultSignatureTemplateId);
 }
