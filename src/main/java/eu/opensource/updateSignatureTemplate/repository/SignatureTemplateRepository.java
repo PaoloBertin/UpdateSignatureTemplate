@@ -26,6 +26,9 @@ public interface SignatureTemplateRepository extends JpaRepository<SignatureTemp
            "                                JOIN ST.documentClassFolder D " +
            "                                WHERE ST.id = :defaultSignatureTemplateId" +
            "                              )" +
-           "               )")
+           "               )" +
+//           "AND ST.id IN (" +
+//           "                " +
+           "             )")
     int setDefaultForDocumentClass(@Param("defaultSignatureTemplateId") Long defaultSignatureTemplateId);
 }
